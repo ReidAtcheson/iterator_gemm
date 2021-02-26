@@ -1,6 +1,3 @@
-
-
-
 pub fn gemm(m : usize, n : usize, p : usize, a : &[f64], lda : usize, b : &[f64], ldb : usize, c : &mut [f64], ldc : usize) -> () {
 
     for i in 0..m{
