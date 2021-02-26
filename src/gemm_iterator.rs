@@ -1,14 +1,9 @@
-pub fn gemm(m : usize, n : usize, p : usize, a : &[f64], lda : usize, b : &[f64], ldb : usize, c : &mut [f64], ldc : usize) -> () {
-
-    for i in 0..m{
-        for k in 0..p{
-            for j in 0..n{
-                let aik=a[k+lda*i];
-                let bkj=b[j+ldb*k];
-                let ref mut cij=c[j+ldc*i];
-                *cij += aik*bkj;
+pub fn gemm(_m : usize, _n : usize, _p : usize, a : &[f64], lda : usize, b : &[f64], ldb : usize, c : &mut [f64], ldc : usize) -> () {
+    for (ci,ai) in c.chunks_exact_mut(ldc).zip(a.chunks_exact(lda)){
+        for (aik,bk) in ai.iter().zip(b.chunks_exact(ldb)){
+            for (cij,bkj) in ci.iter_mut().zip(bk.iter()){
+                *cij += (*aik) * (*bkj);
             }
         }
     }
-
 }
