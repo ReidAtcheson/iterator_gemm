@@ -37,7 +37,7 @@ pub fn gemm(m : usize, n : usize, p : usize, a : &[f64], _lda : usize, b : &[f64
                 let mut cblk = cblk_big.slice_mut(s![i..iend,j..jend]);
 
                 //Copy data from full matrices into smaller workspaces
-                for (x,y) in ablk.iter().zip(ab.iter_mut()){
+                for (x,y) in ablk.t().iter().zip(ab.iter_mut()){
                     *y=*x;
                 }
                 for (x,y) in bblk.iter().zip(bb.iter_mut()){
@@ -57,10 +57,11 @@ pub fn gemm(m : usize, n : usize, p : usize, a : &[f64], _lda : usize, b : &[f64
                             let yiend = std::cmp::min(q,yi+BQ);
                             let ykend = std::cmp::min(s,yk+BS);
                             let yjend = std::cmp::min(r,yj+BR);
-                            for bi in yi..yiend{
-                                for bk in yk..ykend{
+                            for bk in yk..ykend{
+                                for bi in yi..yiend{
                                     for bj in (yj as isize)..yjend{
-                                        let ik = bk+s*bi;
+                                        let ik = bi + q*bk;
+                                        //let ik = bk+s*bi;
                                         let kj = bj+r*bk;
                                         let ij = bj+r*bi;
                                         unsafe{

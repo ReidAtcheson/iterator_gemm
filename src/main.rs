@@ -3,13 +3,12 @@ use std::time::{Instant};
 
 pub mod reference;
 pub mod gemm_iterator;
-pub mod iterator_cache;
-pub mod gemm_microkernel;
+pub mod gemm_unsafe;
 
 //use reference::gemm;
 //use gemm_iterator::gemm;
-//use iterator_cache::gemm;
-use gemm_microkernel::gemm;
+use gemm_unsafe::gemm;
+
 fn main() {
     let args: Vec<String> = env::args().collect();
     let m=args[1].parse::<usize>().unwrap();
